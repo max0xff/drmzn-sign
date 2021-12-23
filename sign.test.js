@@ -1,4 +1,4 @@
-import { PrivateKey } from "@hashgraph/cryptography";
+import { PrivateKey } from "@hashgraph/sdk";
 import { signMsg, verifyMsg } from "./lib.js";
 
 // Test Hedera address

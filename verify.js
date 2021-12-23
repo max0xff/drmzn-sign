@@ -1,4 +1,4 @@
-import { PrivateKey, BadKeyError } from "@hashgraph/cryptography";
+import { BadKeyError } from "@hashgraph/cryptography";
 import inquirer from "inquirer";
 
 import { signMsg, verifyMsg } from "./lib.js";
@@ -11,21 +11,25 @@ inquirer
       message: 'Enter message:',
     },
     {
-      type: 'password',
-      name: 'privKey',
-      message: 'Enter private key:',
+      type: 'input',
+      name: 'signature',
+      message: 'Enter signature:',
+    },
+    {
+      type: 'input',
+      name: 'pubKey',
+      message: 'Enter public key:',
     },
   ])
   .then(async (answers) => {
     const msg = answers.msg;
-    const privKey = answers.privKey;
-    const pubKey = PrivateKey.fromString(privKey).publicKey.toString('hex');
-    const signature = await signMsg(msg, privKey);
+    const signature = answers.signature;
+    const pubKey = answers.pubKey;
     const isValid = await verifyMsg(msg, signature, pubKey);
     if (isValid) {
-      console.log(`Your signature for ${msg}:`, signature);
+      console.log('Valid signature!');
     } else {
-      console.log('Error - invalid signature');
+      console.log('Invalid signature!');
     }
   })
   .catch((error) => {
@@ -34,7 +38,6 @@ inquirer
     } else if (error instanceof BadKeyError) {
       console.log('Error: Invalid private key');
     } else {
-      console.log('Error');
       console.log(error);
     }
   });

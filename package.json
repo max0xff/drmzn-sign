@@ -1,22 +1,22 @@
 {
   "type": "module",
-  "source": "app.js",
   "author": {
     "name": "Alexandar Tsvetanov",
     "email": "alex.tzvetanov@gmail.com"
   },
   "license": "MIT",
-  "main": "dist/app.js",
   "scripts": {
-    "sign": "node index.js"
+    "sign": "node sign.js",
+    "verify": "node verify.js",
+    "token": "node token.js"
   },
   "dependencies": {
-    "@hashgraph/cryptography": "^1.1.0-beta.3",
+    "@hashgraph/sdk": "^2.7.0-beta.2",
     "@noble/ed25519": "^1.3.0",
     "inquirer": "^8.2.0"
   },
   "engines": {
     "node": ">=16.2.0"
   },
-  "version": "0.0.1"
+  "version": "0.0.2"
 }
