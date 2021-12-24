@@ -3,7 +3,7 @@ import { BadKeyError } from '@hashgraph/sdk';
 
 import { assocToken } from "./lib.js";
 
-inquirer
+export const token = () => inquirer
   .prompt([
     {
       type: 'list',
@@ -32,8 +32,10 @@ inquirer
     const accountId = answers.accountId;
     const tokenId = answers.tokenId;
     const privKey = answers.privKey;
-    const status = assocToken(network, accountId, tokenId, privKey);
-    console.log(status);
+    const status = await assocToken(network, accountId, tokenId, privKey);
+    if (status) {
+      console.log(status);
+    }
   })
   .catch((error) => {
     if (error.isTtyError) {

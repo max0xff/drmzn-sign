@@ -9,14 +9,6 @@ Features:
 
 ```yarn install```
 
-# sign text string with private key
+# start
 
-```yarn sign```
-
-# verify signature with public key
-
-```yarn verify```
-
-# associate account with token
-
-```yarn token```
+```yarn start```

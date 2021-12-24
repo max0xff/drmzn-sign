@@ -1,9 +1,9 @@
-import { BadKeyError } from "@hashgraph/cryptography";
+import { BadKeyError } from "@hashgraph/sdk";
 import inquirer from "inquirer";
 
 import { signMsg, verifyMsg } from "./lib.js";
 
-inquirer
+export const verify = () => inquirer
   .prompt([
     {
       type: 'input',
