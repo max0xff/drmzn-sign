@@ -1,7 +1,7 @@
 import { BadKeyError } from "@hashgraph/sdk";
 import inquirer from "inquirer";
 
-import { signMsg, verifyMsg } from "./lib.js";
+import { verifyMsg } from "./lib.js";
 
 export const verify = () => inquirer
   .prompt([
@@ -21,11 +21,11 @@ export const verify = () => inquirer
       message: 'Enter public key:',
     },
   ])
-  .then(async (answers) => {
+  .then((answers) => {
     const msg = answers.msg;
     const signature = answers.signature;
     const pubKey = answers.pubKey;
-    const isValid = await verifyMsg(msg, signature, pubKey);
+    const isValid = verifyMsg(msg, signature, pubKey);
     if (isValid) {
       console.log('Valid signature!');
     } else {
