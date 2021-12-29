@@ -5,7 +5,7 @@ Features:
 - Verify message and signature with public key
 - Associate account with NFT token on Hedera Network
 
-Tested networs:
+Tested networks:
 - Hedera
 - Solana
 
