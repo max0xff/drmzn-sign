@@ -9,6 +9,7 @@ import {
 } from '@hashgraph/sdk';
 import { PublicKey as PublicKeySolana } from '@solana/web3.js';
 import nacl from 'tweetnacl';
+import { recoverPersonalSignature } from '@metamask/eth-sig-util';
 
 /**
  * Sign message with private key
@@ -46,6 +47,15 @@ export function signMsg(message, privKey) {
     const sign = Buffer.from(signature, 'hex');
     const isValid = nacl.sign.detached.verify(msg, sign, publicKey);
     return isValid;
+  } catch (error) {
+  }
+
+  // check for ethereum
+  try {
+    const recoveredAddress = recoverPersonalSignature({ data: message, signature });
+    if (recoveredAddress === pubKey) {
+      return true;
+    }
   } catch (error) {
   }
 

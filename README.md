@@ -8,6 +8,7 @@ Features:
 Tested networs:
 - Hedera
 - Solana
+- Ethereum
 
 # install
 

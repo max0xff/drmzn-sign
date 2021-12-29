@@ -1,6 +1,8 @@
 import { PrivateKey } from "@hashgraph/sdk";
 import { signMsg, verifyMsg } from "./lib.js";
 import nacl from 'tweetnacl';
+import { recoverPersonalSignature, personalSign } from '@metamask/eth-sig-util';
+import Wallet from 'ethereumjs-wallet'
 
 import { Keypair } from '@solana/web3.js';
 
@@ -15,7 +17,7 @@ async function testHedera() {
 
 testHedera();
 
-// Test Hedera address
+// Test Soalana address
 async function testSolana() {
     const message = "Testing 123";
     let account = Keypair.generate();
@@ -26,3 +28,17 @@ async function testSolana() {
 }
 
 testSolana();
+
+// Test Ethereum address
+async function testEthereum() {
+    const message = "Testing 123";
+    const account = Wallet.default.generate();
+    const privKey = account.getPrivateKeyString().substring(2);
+    const pubKey = account.getAddressString();
+    const signature = personalSign({ privateKey: Buffer.from(privKey, 'hex'), data: message });
+    const res = recoverPersonalSignature({ data: message, signature });
+    const isValid = pubKey === res;
+    console.log('Ethereum is valid:', isValid);
+}
+
+testEthereum();
