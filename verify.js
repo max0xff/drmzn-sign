@@ -36,7 +36,7 @@ export const verify = () => inquirer
     if (error.isTtyError) {
       console.log(`Error - Prompt couldn't be rendered in the current environment`);
     } else if (error instanceof BadKeyError) {
-      console.log('Error: Invalid private key');
+      console.log('Error: Invalid key');
     } else {
       console.log(error);
     }

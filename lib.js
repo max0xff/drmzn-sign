@@ -7,12 +7,14 @@ import {
   ReceiptStatusError,
   BadKeyError
 } from '@hashgraph/sdk';
+import { PublicKey as PublicKeySolana } from '@solana/web3.js';
+import nacl from 'tweetnacl';
 
 /**
  * Sign message with private key
  * @param {string} msg message to be signed
  * @param {string} privKey private key as string
- * @returns {string} the signature as string
+ * @returns {string} the signature as hex string
  */
 export function signMsg(message, privKey) {
   const privateKey = PrivateKey.fromString(privKey);
@@ -24,16 +26,30 @@ export function signMsg(message, privKey) {
 /**
  * Verify if message is signed with private key
  * @param {string} msg message to be verified
- * @param {string} signature signature
+ * @param {string} signature signature as hex string
  * @param {string} pubKey public key as string
- * @returns {Promise} is signature valid boolean
+ * @returns {boolean} is signature valid
  */
-export function verifyMsg(message, signature, pubKey) {
-  const publicKey = PublicKey.fromString(pubKey);
-  const msg = Buffer.from(message, 'utf8');
-  const sign = Buffer.from(signature, 'hex');
-  const isSigned = publicKey.verify(msg, sign);
-  return isSigned;
+ export function verifyMsg(message, signature, pubKey) {
+  try {
+    const publicKey = PublicKey.fromString(pubKey);
+    const msg = Buffer.from(message, 'utf8');
+    const sign = Buffer.from(signature, 'hex');
+    const isSigned = publicKey.verify(msg, sign);
+    return isSigned;
+  } catch (error) {
+  }
+
+  try {
+    const publicKey = new PublicKeySolana(pubKey).toBuffer();
+    const msg = Buffer.from(message, 'utf8');
+    const sign = Buffer.from(signature, 'hex');
+    const isValid = nacl.sign.detached.verify(msg, sign, publicKey);
+    return isValid;
+  } catch (error) {
+  }
+
+  return false;
 }
 
 /**
@@ -70,7 +86,7 @@ export async function assocToken(network, clientId, tokenId, privKey) {
     return "The transaction consensus status: " + transactionStatus.toString();
   } catch (error) {
     if (error instanceof BadKeyError) {
-      console.log('Error: Invalid private key');
+      console.log('Error: Invalid key');
     } else if (error instanceof ReceiptStatusError) {
       console.log(error.message);
     } else {
