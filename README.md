@@ -1,8 +1,8 @@
-Command line utility for signing text string and generating hash signature with Ed25519 private key.
+Command line utility for signing text string and generating signature with Ed25519 private key.
 
 Features:
-- Sign text string with private key and generate verifiable signature
-- Verify message and signature with public key
+- Sign message with private key
+- Verify signature with public key
 - Associate account with NFT token on Hedera Network
 
 Tested networks:
